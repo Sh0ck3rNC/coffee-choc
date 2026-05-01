@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Admin — Commandes</title>
+</head>
+<body>
+<main>
+    <h2 class="fw-bold mb-4" style="color:#3b1f0e">
+        <i class="bi bi-clipboard-list me-2"></i>Gestion des Commandes
+    </h2>
+
+    <div class="card p-3">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="background-color:#3b1f0e; color:white;">
+            <tr>
+                <th>#</th>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Statut</th>
+                <th>Changer statut</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${commandes}">
+                <td th:text="${c.id}"></td>
+                <td th:text="${c.nomClient}"></td>
+                <td th:text="${c.emailClient}"></td>
+                <td th:text="${#temporals.format(c.dateCommande, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${#numbers.formatDecimal(c.total, 1, 0)} + ' XPF'"></td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${c.statut.name() == 'EN_ATTENTE'} ? 'bg-warning text-dark' :
+                                          (${c.statut.name() == 'EN_PREPARATION'} ? 'bg-info text-dark' :
+                                          (${c.statut.name() == 'PRET'} ? 'bg-primary' :
+                                          (${c.statut.name() == 'LIVRE'} ? 'bg-success' : 'bg-danger')))"
+                          th:text="${c.statut}">
+                    </span>
+                </td>
+                <td>
+                    <form th:action="@{/admin/commandes/{id}/statut(id=${c.id})}" method="post"
+                          class="d-flex gap-1">
+                        <select name="statut" class="form-select form-select-sm" style="width:auto">
+                            <option th:each="s : ${statuts}"
+                                    th:value="${s}"
+                                    th:text="${s}"
+                                    th:selected="${s == c.statut}">
+                            </option>
+                        </select>
+                        <button type="submit" class="btn btn-cafe btn-sm">OK</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${#lists.isEmpty(commandes)}" class="text-center py-4 text-muted">
+            <i class="bi bi-inbox fs-1"></i>
+            <p>Aucune commande pour le moment.</p>
+        </div>
+    </div>
+</main>
+</body>
+</html>

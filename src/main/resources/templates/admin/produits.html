@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Admin — Produits</title>
+</head>
+<body>
+<main>
+    <h2 class="fw-bold mb-4" style="color:#3b1f0e">
+        <i class="bi bi-box-seam me-2"></i>Gestion des Produits
+    </h2>
+
+    <!-- Formulaire ajout -->
+    <div class="card p-4 mb-4">
+        <h5 class="fw-bold mb-3">Ajouter un produit</h5>
+        <form th:action="@{/admin/produits}" th:object="${produit}" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" th:field="*{nom}" class="form-control" placeholder="Nom" required/>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" th:field="*{categorie}" class="form-control" placeholder="Catégorie"/>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" th:field="*{prix}" class="form-control" placeholder="Prix (XPF)" step="0.01" required/>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" th:field="*{imageUrl}" class="form-control" placeholder="URL image (optionnel)"/>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                    <div class="form-check">
+                        <input type="checkbox" th:field="*{disponible}" class="form-check-input" id="disponible"/>
+                        <label class="form-check-label" for="disponible">Dispo</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <textarea th:field="*{description}" class="form-control" placeholder="Description" rows="2"></textarea>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-cafe">
+                        <i class="bi bi-plus-circle me-1"></i>Ajouter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Liste produits -->
+    <div class="card p-3">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="background-color:#3b1f0e; color:white;">
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Disponible</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${produits}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.nom}"></td>
+                <td><span class="badge badge-categorie" th:text="${p.categorie}"></span></td>
+                <td th:text="${#numbers.formatDecimal(p.prix, 1, 0)} + ' XPF'"></td>
+                <td>
+                    <span th:if="${p.disponible}" class="badge bg-success">Oui</span>
+                    <span th:unless="${p.disponible}" class="badge bg-danger">Non</span>
+                </td>
+                <td>
+                    <a th:href="@{/admin/produits/edit/{id}(id=${p.id})}"
+                       class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a th:href="@{/admin/produits/delete/{id}(id=${p.id})}"
+                       class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('Supprimer ce produit ?')">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
