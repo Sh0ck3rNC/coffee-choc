@@ -41,23 +41,16 @@
         <i class="bi bi-cup fs-1"></i>
         <p class="mt-2">Aucun produit disponible pour le moment.</p>
     </div>
-</main>
 
-<script th:inline="none">
-    function ajouterAuPanier(btn) {
-        const id = btn.getAttribute('data-id');
-        const nom = btn.getAttribute('data-nom');
-        const prix = parseFloat(btn.getAttribute('data-prix'));
-        let panier = JSON.parse(localStorage.getItem('panier') || '[]');
-        const existing = panier.find(p => p.id === id);
-        if (existing) {
-            existing.quantite++;
-        } else {
-            panier.push({ id, nom, prix, quantite: 1 });
-        }
-        localStorage.setItem('panier', JSON.stringify(panier));
-        alert(nom + ' ajouté au panier !');
-    }
-</script>
+    <!-- Toast notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastAjout" class="toast align-items-center text-bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>
