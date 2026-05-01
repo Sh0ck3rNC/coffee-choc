@@ -6,13 +6,19 @@
 </head>
 <body>
 <main>
-    <h2 class="fw-bold mb-4" style="color:#3b1f0e">
-        <i class="bi bi-clipboard-list me-2"></i>Gestion des Commandes
-    </h2>
+    <div class="mb-4">
+        <div class="page-eyebrow">Administration</div>
+        <h2 class="page-title mb-0">Gestion des Commandes</h2>
+        <div class="ornament">
+            <div class="ornament-line"></div>
+            <div class="ornament-dot"></div>
+            <div class="ornament-line rev"></div>
+        </div>
+    </div>
 
-    <div class="card p-3">
-        <table class="table table-hover align-middle mb-0">
-            <thead style="background-color:#3b1f0e; color:white;">
+    <div class="panel">
+        <table class="table table-jazz align-middle mb-0">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>Client</th>
@@ -25,39 +31,41 @@
             </thead>
             <tbody>
             <tr th:each="c : ${commandes}">
-                <td th:text="${c.id}"></td>
-                <td th:text="${c.nomClient}"></td>
-                <td th:text="${c.emailClient}"></td>
-                <td th:text="${#temporals.format(c.dateCommande, 'dd/MM/yyyy HH:mm')}"></td>
-                <td th:text="${#numbers.formatDecimal(c.total, 1, 0)} + ' XPF'"></td>
+                <td style="font-size:0.8rem;color:var(--smoke)" th:text="${c.id}"></td>
+                <td style="font-family:'Playfair Display',serif;font-weight:600;color:var(--roast)" th:text="${c.nomClient}"></td>
+                <td style="font-size:0.83rem" th:text="${c.emailClient}"></td>
+                <td style="font-size:0.83rem" th:text="${#temporals.format(c.dateCommande, 'dd/MM/yyyy HH:mm')}"></td>
+                <td style="font-family:'Playfair Display',serif;font-weight:600" th:text="${#numbers.formatDecimal(c.total, 1, 0)} + ' XPF'"></td>
                 <td>
-                    <span class="badge"
-                          th:classappend="${c.statut.name() == 'EN_ATTENTE'} ? 'bg-warning text-dark' :
-                                          (${c.statut.name() == 'EN_PREPARATION'} ? 'bg-info text-dark' :
-                                          (${c.statut.name() == 'PRET'} ? 'bg-primary' :
-                                          (${c.statut.name() == 'LIVRE'} ? 'bg-success' : 'bg-danger')))"
+                    <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;border-radius:2px;padding:0.25em 0.65em;border:1px solid"
+                          th:classappend="${c.statut.name() == 'EN_ATTENTE'} ? 'text-warning border-warning' :
+                                          (${c.statut.name() == 'EN_PREPARATION'} ? 'text-info border-info' :
+                                          (${c.statut.name() == 'PRET'} ? '' :
+                                          (${c.statut.name() == 'LIVRE'} ? '' : 'text-danger border-danger')))"
+                          th:style="${c.statut.name() == 'PRET'} ? 'color:var(--caramel);border-color:var(--caramel)' :
+                                     (${c.statut.name() == 'LIVRE'} ? 'color:#4a7c59;border-color:#4a7c59' : '')"
                           th:text="${c.statut}">
                     </span>
                 </td>
                 <td>
                     <form th:action="@{/admin/commandes/{id}/statut(id=${c.id})}" method="post"
                           class="d-flex gap-1">
-                        <select name="statut" class="form-select form-select-sm" style="width:auto">
+                        <select name="statut" class="form-select form-select-sm" style="width:auto;font-size:0.8rem">
                             <option th:each="s : ${statuts}"
                                     th:value="${s}"
                                     th:text="${s}"
                                     th:selected="${s == c.statut}">
                             </option>
                         </select>
-                        <button type="submit" class="btn btn-cafe btn-sm">OK</button>
+                        <button type="submit" class="btn btn-cafe btn-sm" style="font-size:0.68rem;padding:0.3rem 0.75rem">OK</button>
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
 
-        <div th:if="${#lists.isEmpty(commandes)}" class="text-center py-4 text-muted">
-            <i class="bi bi-inbox fs-1"></i>
+        <div th:if="${#lists.isEmpty(commandes)}" class="empty-state">
+            <i class="bi bi-inbox"></i>
             <p>Aucune commande pour le moment.</p>
         </div>
     </div>

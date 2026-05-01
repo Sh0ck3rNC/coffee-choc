@@ -6,13 +6,20 @@
 </head>
 <body>
 <main>
-    <h2 class="fw-bold mb-4" style="color:#3b1f0e">
-        <i class="bi bi-box-seam me-2"></i>Gestion des Produits
-    </h2>
+    <div class="mb-4">
+        <div class="page-eyebrow">Administration</div>
+        <h2 class="page-title mb-0">Gestion des Produits</h2>
+        <div class="ornament">
+            <div class="ornament-line"></div>
+            <div class="ornament-dot"></div>
+            <div class="ornament-line rev"></div>
+        </div>
+    </div>
 
-    <!-- Formulaire ajout -->
-    <div class="card p-4 mb-4">
-        <h5 class="fw-bold mb-3">Ajouter un produit</h5>
+    <div class="panel mb-4">
+        <h5 style="font-family:'Playfair Display',serif;color:var(--roast);font-size:1rem;letter-spacing:0.04em" class="mb-3">
+            Ajouter un produit
+        </h5>
         <form th:action="@{/admin/produits}" th:object="${produit}" method="post">
             <div class="row g-3">
                 <div class="col-md-3">
@@ -30,7 +37,7 @@
                 <div class="col-md-1 d-flex align-items-center">
                     <div class="form-check">
                         <input type="checkbox" th:field="*{disponible}" class="form-check-input" id="disponible"/>
-                        <label class="form-check-label" for="disponible">Dispo</label>
+                        <label class="form-check-label" for="disponible" style="font-size:0.78rem">Dispo</label>
                     </div>
                 </div>
                 <div class="col-12">
@@ -38,17 +45,16 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-cafe">
-                        <i class="bi bi-plus-circle me-1"></i>Ajouter
+                        <i class="bi bi-plus me-1"></i>Ajouter
                     </button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- Liste produits -->
-    <div class="card p-3">
-        <table class="table table-hover align-middle mb-0">
-            <thead style="background-color:#3b1f0e; color:white;">
+    <div class="panel">
+        <table class="table table-jazz align-middle mb-0">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>Nom</th>
@@ -60,21 +66,23 @@
             </thead>
             <tbody>
             <tr th:each="p : ${produits}">
-                <td th:text="${p.id}"></td>
-                <td th:text="${p.nom}"></td>
-                <td><span class="badge badge-categorie" th:text="${p.categorie}"></span></td>
-                <td th:text="${#numbers.formatDecimal(p.prix, 1, 0)} + ' XPF'"></td>
+                <td style="font-size:0.8rem;color:var(--smoke)" th:text="${p.id}"></td>
+                <td style="font-family:'Playfair Display',serif;font-weight:600;color:var(--roast)" th:text="${p.nom}"></td>
+                <td><span class="badge-categorie" th:text="${p.categorie}"></span></td>
+                <td style="font-size:0.88rem" th:text="${#numbers.formatDecimal(p.prix, 1, 0)} + ' XPF'"></td>
                 <td>
-                    <span th:if="${p.disponible}" class="badge bg-success">Oui</span>
-                    <span th:unless="${p.disponible}" class="badge bg-danger">Non</span>
+                    <span th:if="${p.disponible}" style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;background:transparent;border:1px solid #4a7c59;color:#4a7c59;border-radius:2px;padding:0.2em 0.6em">Oui</span>
+                    <span th:unless="${p.disponible}" style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;background:transparent;border:1px solid #9b3a2a;color:#9b3a2a;border-radius:2px;padding:0.2em 0.6em">Non</span>
                 </td>
                 <td>
                     <a th:href="@{/admin/produits/edit/{id}(id=${p.id})}"
-                       class="btn btn-sm btn-outline-secondary me-1">
+                       class="btn btn-sm me-1"
+                       style="border:1px solid var(--fog);border-radius:2px;color:var(--mahogany);font-size:0.75rem">
                         <i class="bi bi-pencil"></i>
                     </a>
                     <a th:href="@{/admin/produits/delete/{id}(id=${p.id})}"
-                       class="btn btn-sm btn-outline-danger"
+                       class="btn btn-sm"
+                       style="border:1px solid var(--fog);border-radius:2px;color:#9b3a2a;font-size:0.75rem"
                        onclick="return confirm('Supprimer ce produit ?')">
                         <i class="bi bi-trash"></i>
                     </a>
