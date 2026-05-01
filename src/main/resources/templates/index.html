@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Coffee Choc — Notre Menu</title>
+</head>
+<body>
+<main>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color:#3b1f0e">
+            <i class="bi bi-cup-hot me-2"></i>Notre Menu
+        </h2>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" th:each="produit : ${produits}">
+            <div class="card h-100">
+                <img th:src="${produit.imageUrl != null ? produit.imageUrl : 'https://placehold.co/400x180/d4a96a/3b1f0e?text=Café'}"
+                     class="card-img-top" th:alt="${produit.nom}"/>
+                <div class="card-body">
+                    <span class="badge badge-categorie mb-2" th:text="${produit.categorie}"></span>
+                    <h5 class="card-title fw-bold" th:text="${produit.nom}"></h5>
+                    <p class="card-text text-muted small" th:text="${produit.description}"></p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="fw-bold fs-5" style="color:#6f3d1f"
+                              th:text="${#numbers.formatDecimal(produit.prix, 1, 0)} + ' XPF'"></span>
+                        <button class="btn btn-cafe btn-sm"
+                                th:data-id="${produit.id}"
+                                th:data-nom="${produit.nom}"
+                                th:data-prix="${produit.prix}"
+                                onclick="ajouterAuPanier(this)">
+                            <i class="bi bi-cart-plus me-1"></i>Ajouter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(produits)}" class="text-center py-5 text-muted">
+        <i class="bi bi-cup fs-1"></i>
+        <p class="mt-2">Aucun produit disponible pour le moment.</p>
+    </div>
+</main>
+
+<script th:inline="none">
+    function ajouterAuPanier(btn) {
+        const id = btn.getAttribute('data-id');
+        const nom = btn.getAttribute('data-nom');
+        const prix = parseFloat(btn.getAttribute('data-prix'));
+        let panier = JSON.parse(localStorage.getItem('panier') || '[]');
+        const existing = panier.find(p => p.id === id);
+        if (existing) {
+            existing.quantite++;
+        } else {
+            panier.push({ id, nom, prix, quantite: 1 });
+        }
+        localStorage.setItem('panier', JSON.stringify(panier));
+        alert(nom + ' ajouté au panier !');
+    }
+</script>
+</body>
+</html>
