@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/commandes")
 @RequiredArgsConstructor
+@Tag(name = "Commandes", description = "Gestion des commandes clients")
 public class CommandeApiController {
 
     private final CommandeService commandeService;
@@ -55,4 +57,6 @@ public class CommandeApiController {
         commandeService.deleteCommande(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

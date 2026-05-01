@@ -80,4 +80,9 @@ public class ViewController {
     public String panier() {
         return "panier";
     }
+
+    @GetMapping("/teapot")
+    public String teapot() {
+        throw new UnsupportedOperationException();
+    }
 }
