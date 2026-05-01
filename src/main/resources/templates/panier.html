@@ -2,23 +2,59 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}">
 <head>
-    <title>Coffee Choc — Panier</title>
+    <title>Coffee &amp; Choc — Panier</title>
 </head>
 <body>
 <main>
-    <h2 class="fw-bold mb-4" style="color:#3b1f0e">
-        <i class="bi bi-cart3 me-2"></i>Mon Panier
-    </h2>
+    <div class="mb-4">
+        <div class="page-eyebrow">Votre sélection</div>
+        <h2 class="page-title mb-0">Mon Panier</h2>
+        <div class="ornament">
+            <div class="ornament-line"></div>
+            <div class="ornament-dot"></div>
+            <div class="ornament-line rev"></div>
+        </div>
+    </div>
 
-    <div id="panier-vide" class="text-center py-5 text-muted">
-        <i class="bi bi-cart-x fs-1"></i>
-        <p class="mt-2">Votre panier est vide.</p>
+    <div id="panier-vide" class="empty-state">
+        <i class="bi bi-bag"></i>
+        <p>Votre panier est vide.</p>
         <a th:href="@{/}" class="btn btn-cafe mt-2">Voir le menu</a>
     </div>
 
-    <div id="panier-contenu" class="d-none">
-        <table class="table bg-white rounded shadow-sm">
-            <thead style="background-color:#3b1f0e; color:white;">
+    <div id="panier-contenu" class="d-none panel">
+
+        <!-- Finaliser en haut -->
+        <div class="mb-4 pb-4" style="border-bottom:1px solid var(--fog)">
+            <div class="page-eyebrow mb-1">Finaliser</div>
+            <h4 style="font-family:'Playfair Display',serif; font-size:1.25rem; color:var(--roast);" class="mb-3">Passer la commande</h4>
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label">Nom complet</label>
+                    <input type="text" id="nomClient" class="form-control" placeholder="Jean Dupont"/>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="emailClient" class="form-control" placeholder="jean@email.com"/>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-cafe w-100" onclick="passerCommande()">
+                        <i class="bi bi-check2 me-1"></i>Commander
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau panier -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--smoke)">Contenu du panier</span>
+            <span style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--roast)">
+                Total : <span id="total">0</span> XPF
+            </span>
+        </div>
+
+        <table class="table table-jazz align-middle mb-0">
+            <thead>
             <tr>
                 <th>Produit</th>
                 <th>Prix unitaire</th>
@@ -29,24 +65,6 @@
             </thead>
             <tbody id="lignes-panier"></tbody>
         </table>
-
-        <div class="card p-4 mt-3">
-            <h4 class="fw-bold mb-3" style="color:#3b1f0e">Passer la commande</h4>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Nom complet</label>
-                <input type="text" id="nomClient" class="form-control" placeholder="Ex: Jean Dupont"/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input type="email" id="emailClient" class="form-control" placeholder="Ex: jean@email.com"/>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="fw-bold">Total : <span id="total">0</span> XPF</h5>
-                <button class="btn btn-cafe px-4" onclick="passerCommande()">
-                    <i class="bi bi-check-circle me-1"></i>Commander
-                </button>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -57,36 +75,32 @@
             const totalEl = document.getElementById('total');
             const panierVide = document.getElementById('panier-vide');
             const panierContenu = document.getElementById('panier-contenu');
-
             tbody.innerHTML = '';
             let total = 0;
-
             if (panier.length === 0) {
                 panierVide.classList.remove('d-none');
                 panierContenu.classList.add('d-none');
                 return;
             }
-
             panierVide.classList.add('d-none');
             panierContenu.classList.remove('d-none');
-
             panier.forEach((item, index) => {
                 const sousTotal = item.prix * item.quantite;
                 total += sousTotal;
                 tbody.innerHTML += `
                     <tr>
-                        <td class="fw-semibold">${item.nom}</td>
-                        <td>${item.prix} XPF</td>
+                        <td style="font-family:'Playfair Display',serif;font-weight:600;color:var(--roast)">${item.nom}</td>
+                        <td style="font-size:0.88rem">${item.prix} XPF</td>
                         <td>
-                            <div class="input-group input-group-sm" style="width:110px">
-                                <button class="btn btn-outline-secondary" onclick="changerQte(${index}, -1)">-</button>
-                                <span class="input-group-text">${item.quantite}</span>
-                                <button class="btn btn-outline-secondary" onclick="changerQte(${index}, 1)">+</button>
+                            <div class="input-group input-group-sm" style="width:105px">
+                                <button class="btn btn-outline-secondary" style="border-radius:2px;border-color:var(--fog)" onclick="changerQte(${index}, -1)">−</button>
+                                <span class="input-group-text" style="background:var(--parchment);border-color:var(--fog);font-size:0.85rem">${item.quantite}</span>
+                                <button class="btn btn-outline-secondary" style="border-radius:2px;border-color:var(--fog)" onclick="changerQte(${index}, 1)">+</button>
                             </div>
                         </td>
-                        <td>${sousTotal} XPF</td>
+                        <td style="font-family:'Playfair Display',serif;font-weight:600">${sousTotal} XPF</td>
                         <td>
-                            <button class="btn btn-sm btn-outline-danger" onclick="supprimer(${index})">
+                            <button class="btn btn-sm" style="border:1px solid var(--fog);border-radius:2px;color:var(--caramel)" onclick="supprimer(${index})">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
@@ -113,16 +127,13 @@
             const email = document.getElementById('emailClient').value.trim();
             if (!nom || !email) { alert('Veuillez renseigner votre nom et email.'); return; }
             if (panier.length === 0) { alert('Votre panier est vide.'); return; }
-
             const panierObj = {};
             panier.forEach(item => panierObj[item.id] = item.quantite);
-
             const response = await fetch('/api/commandes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nomClient: nom, emailClient: email, panier: panierObj })
             });
-
             if (response.ok) {
                 localStorage.removeItem('panier');
                 alert('Commande passée avec succès ! Merci ' + nom + ' ☕');

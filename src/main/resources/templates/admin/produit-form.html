@@ -6,42 +6,51 @@
 </head>
 <body>
 <main>
-    <h2 class="fw-bold mb-4" style="color:#3b1f0e">
-        <i class="bi bi-pencil-square me-2"></i>Modifier le produit
-    </h2>
+    <div class="mb-4">
+        <div class="page-eyebrow">Administration</div>
+        <h2 class="page-title mb-0">Modifier le produit</h2>
+        <div class="ornament">
+            <div class="ornament-line"></div>
+            <div class="ornament-dot"></div>
+            <div class="ornament-line rev"></div>
+        </div>
+    </div>
 
-    <div class="card p-4" style="max-width:600px">
+    <div class="panel" style="max-width:560px">
         <form th:action="@{/admin/produits/edit/{id}(id=${produit.id})}"
               th:object="${produit}" method="post">
             <div class="mb-3">
-                <label class="form-label fw-semibold">Nom</label>
+                <label class="form-label">Nom</label>
                 <input type="text" th:field="*{nom}" class="form-control" required/>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Catégorie</label>
+                <label class="form-label">Catégorie</label>
                 <input type="text" th:field="*{categorie}" class="form-control"/>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Prix (XPF)</label>
+                <label class="form-label">Prix (XPF)</label>
                 <input type="number" th:field="*{prix}" class="form-control" step="0.01" required/>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Description</label>
+                <label class="form-label">Description</label>
                 <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">URL Image</label>
+                <label class="form-label">URL Image</label>
                 <input type="text" th:field="*{imageUrl}" class="form-control"/>
             </div>
-            <div class="mb-3 form-check">
+            <div class="mb-4 form-check">
                 <input type="checkbox" th:field="*{disponible}" class="form-check-input" id="disponible"/>
-                <label class="form-check-label" for="disponible">Disponible</label>
+                <label class="form-check-label" for="disponible" style="font-size:0.82rem">Disponible</label>
             </div>
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 pt-3" style="border-top:1px solid var(--fog)">
                 <button type="submit" class="btn btn-cafe">
-                    <i class="bi bi-save me-1"></i>Sauvegarder
+                    <i class="bi bi-check2 me-1"></i>Sauvegarder
                 </button>
-                <a th:href="@{/admin/produits}" class="btn btn-outline-secondary">Annuler</a>
+                <a th:href="@{/admin/produits}"
+                   style="background:transparent;color:var(--roast);border:1px solid var(--roast);border-radius:2px;font-size:0.73rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;padding:0.5rem 1.1rem;text-decoration:none;display:inline-flex;align-items:center">
+                    Annuler
+                </a>
             </div>
         </form>
     </div>

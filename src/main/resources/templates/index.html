@@ -2,34 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}">
 <head>
-    <title>Coffee Choc — Notre Menu</title>
+    <title>Coffee &amp; Choc — Notre Menu</title>
 </head>
 <body>
 <main>
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold" style="color:#3b1f0e">
-            <i class="bi bi-cup-hot me-2"></i>Notre Menu
-        </h2>
+    <div class="mb-4">
+        <div class="page-eyebrow">Sélection du moment</div>
+        <h2 class="page-title mb-0">Notre Menu</h2>
+        <div class="ornament">
+            <div class="ornament-line"></div>
+            <div class="ornament-dot"></div>
+            <div class="ornament-line rev"></div>
+        </div>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" th:each="produit : ${produits}">
+        <div class="col fade-up" th:each="produit : ${produits}">
             <div class="card h-100">
-                <img th:src="${produit.imageUrl != null ? produit.imageUrl : 'https://placehold.co/400x180/d4a96a/3b1f0e?text=Café'}"
+                <img th:src="${produit.imageUrl != null ? produit.imageUrl : 'https://placehold.co/400x195/d4a96a/3b1f0e?text=Coffee+%26+Choc'}"
                      class="card-img-top" th:alt="${produit.nom}"/>
-                <div class="card-body">
-                    <span class="badge badge-categorie mb-2" th:text="${produit.categorie}"></span>
-                    <h5 class="card-title fw-bold" th:text="${produit.nom}"></h5>
-                    <p class="card-text text-muted small" th:text="${produit.description}"></p>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="fw-bold fs-5" style="color:#6f3d1f"
+                <div class="card-body d-flex flex-column">
+                    <span class="badge-categorie mb-2" th:text="${produit.categorie}"></span>
+                    <h5 class="card-title" th:text="${produit.nom}"></h5>
+                    <p class="card-text flex-grow-1" th:text="${produit.description}"></p>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2"
+                         style="border-top: 1px solid var(--fog);">
+                        <span class="prix-display"
                               th:text="${#numbers.formatDecimal(produit.prix, 1, 0)} + ' XPF'"></span>
-                        <button class="btn btn-cafe btn-sm"
+                        <button class="btn btn-cafe"
                                 th:data-id="${produit.id}"
                                 th:data-nom="${produit.nom}"
                                 th:data-prix="${produit.prix}"
                                 onclick="ajouterAuPanier(this)">
-                            <i class="bi bi-cart-plus me-1"></i>Ajouter
+                            <i class="bi bi-bag-plus me-1"></i>Ajouter
                         </button>
                     </div>
                 </div>
@@ -37,14 +42,13 @@
         </div>
     </div>
 
-    <div th:if="${#lists.isEmpty(produits)}" class="text-center py-5 text-muted">
-        <i class="bi bi-cup fs-1"></i>
-        <p class="mt-2">Aucun produit disponible pour le moment.</p>
+    <div th:if="${#lists.isEmpty(produits)}" class="empty-state">
+        <i class="bi bi-cup"></i>
+        <p>Aucun produit disponible pour le moment.</p>
     </div>
 
-    <!-- Toast notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="toastAjout" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div id="toastAjout" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
                 <div class="toast-body" id="toastMessage"></div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
