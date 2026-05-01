@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Coffee Choc — Accès Admin</title>
+</head>
+<body>
+<main>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <div class="text-center mb-4">
+                    <i class="bi bi-shield-lock fs-1" style="color:#6f3d1f"></i>
+                    <h4 class="fw-bold mt-2" style="color:#3b1f0e">Accès Administrateur</h4>
+                </div>
+
+                <div th:if="${erreur}" class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Mot de passe incorrect, veuillez réessayer.
+                </div>
+
+                <form th:action="@{/admin/login}" method="post">
+                    <input type="hidden" name="redirect" th:value="${redirect}"/>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Mot de passe</label>
+                        <input type="password" name="motDePasse" class="form-control"
+                               placeholder="Entrez le mot de passe admin" required autofocus/>
+                    </div>
+                    <button type="submit" class="btn btn-cafe w-100">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Accéder
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

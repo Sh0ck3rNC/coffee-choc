@@ -6,10 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/produits")
 @RequiredArgsConstructor
+@Tag(name = "Produits", description = "Gestion des produits du menu")
 public class ProduitApiController {
 
     private final ProduitService produitService;
