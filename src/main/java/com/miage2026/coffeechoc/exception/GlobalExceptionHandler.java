@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 import java.time.LocalDateTime;
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
             ));
         }
         model.addAttribute("message", ex.getMessage());
+        return "error/404";
+    }
+
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNoResource(Model model) {
+        model.addAttribute("message", "La page demandée est introuvable.");
         return "error/404";
     }
 
