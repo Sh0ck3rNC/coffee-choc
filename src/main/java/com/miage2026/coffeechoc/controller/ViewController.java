@@ -85,4 +85,9 @@ public class ViewController {
     public String teapot() {
         throw new UnsupportedOperationException();
     }
+
+    @GetMapping("/crash")
+    public String crash() {
+        throw new RuntimeException("Simulation d'une erreur serveur 500");
+    }
 }
